@@ -1,6 +1,6 @@
 {
   "mcpServers": {
-    "seo-article-audit": {
+    "AIHR GSC API": {
       "command": "./bin/seo-article-audit-server"
     },
     "ahrefs": {
