@@ -12,7 +12,11 @@
       "description": "Audit AIHR article search performance with Google Search Console and Ahrefs, and format article diffs.",
       "category": "productivity",
       "source": "./plugins/seo-article-audit",
-      "homepage": "https://github.com/MarijnVerdult/seo-article-refresh-plugin"
+      "homepage": "https://github.com/MarijnVerdult/seo-article-refresh-plugin",
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      }
     }
   ]
 }

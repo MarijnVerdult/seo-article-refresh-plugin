@@ -56,15 +56,16 @@ The Excel workbook is the intermediate data deliverable; the `.md` is the final 
 
 ### 2. Call the GSC MCP tool
 
-The GSC server is a remote HTTP MCP endpoint (`https://aihr-gsc-api.vercel.app/mcp`). On first use
-the IDE handles Google OAuth for `@aihr.com` — no local stdio bridge or cached token file.
+The GSC server is a remote HTTP MCP endpoint (`https://aihr-gsc-api.vercel.app/mcp`). Google
+sign-in for `@aihr.com` should already have completed at plugin install (Codex / Cloud Cowork).
 
 ```
 mcp__plugin_seo-article-audit_seo-article-audit__seo_article_audit_gsc(url="<normalised_url>")
 ```
 
-If the result starts with "Error:", surface it to the user and stop. If the tool is missing,
-prompt the user to connect **AIHR GSC API** in MCP settings (`/mcp`).
+If the result starts with "Error:", surface it to the user and stop. If the tool is missing or
+reports not authenticated, ask the user to reinstall the plugin or complete Google sign-in from
+the plugin's connector settings in Codex or Cowork.
 
 **Expect a large response.** For any real article this report is tens of thousands of
 characters (a high-traffic page can have 700+ query rows) and will be auto-saved to a

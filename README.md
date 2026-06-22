@@ -1,6 +1,6 @@
 # AIHR SEO Plugins
 
-Public marketplace repo for Codex and Claude plugins used in AIHR SEO workflows.
+Public marketplace repo for Codex and Cloud Cowork plugins used in AIHR SEO workflows.
 
 ## Install in Codex
 
@@ -9,12 +9,17 @@ codex plugin marketplace add MarijnVerdult/seo-article-refresh-plugin --ref main
 codex plugin add seo-article-audit@aihr-seo-plugins
 ```
 
-## Install in Claude Code
+During install, Codex should open a browser for Google sign-in (PKCE) so the bundled **AIHR GSC API** MCP connector can call Search Console. Only verified `@aihr.com` Workspace accounts are accepted.
 
-```sh
-claude plugin marketplace add MarijnVerdult/seo-article-refresh-plugin --sparse .claude-plugin plugins
-claude plugin install seo-article-audit@aihr-seo-plugins
-```
+## Install in Cloud Cowork
+
+1. Open **Customize → Plugins** in Cowork.
+2. **Add marketplace** and enter `MarijnVerdult/seo-article-refresh-plugin` (or the full GitHub URL).
+3. Install **SEO Article Audit**.
+
+If the plugin includes a connector that needs authentication, Cowork should prompt you to sign in during or right after install — a browser tab or in-app sign-in flow for Google (`@aihr.com`). The GSC MCP server is `https://aihr-gsc-api.vercel.app/mcp`; tool name `seo_article_audit_gsc`.
+
+If install completes without a sign-in prompt, remove and reinstall the plugin after the marketplace cache refreshes, or contact your admin if the org pins an older marketplace snapshot.
 
 ## Included Plugin
 
@@ -27,28 +32,20 @@ This plugin bundles two skills:
 
 ## Contents
 
-- `.agents/plugins/marketplace.json` - Codex marketplace manifest.
-- `.claude-plugin/marketplace.json` - Claude Code marketplace manifest.
-- `plugins/seo-article-audit/.codex-plugin/plugin.json` - Codex plugin manifest.
-- `plugins/seo-article-audit/.claude-plugin/plugin.json` - Claude plugin manifest.
-- `plugins/seo-article-audit/.mcp.json` - MCP server configuration for the remote AIHR GSC API and Ahrefs MCP endpoint.
-- `plugins/seo-article-audit/skills/` - plugin skill instructions and helper scripts.
+- `.agents/plugins/marketplace.json` — Codex marketplace manifest (`authentication: ON_INSTALL`).
+- `.claude-plugin/marketplace.json` — Cloud Cowork / Claude marketplace manifest (`authentication: ON_INSTALL`).
+- `plugins/seo-article-audit/.codex-plugin/plugin.json` — Codex plugin manifest.
+- `plugins/seo-article-audit/.claude-plugin/plugin.json` — Cowork plugin manifest.
+- `plugins/seo-article-audit/.mcp.json` — remote AIHR GSC API and Ahrefs MCP endpoints.
+- `plugins/seo-article-audit/skills/` — plugin skill instructions and helper scripts.
 
 ## Requirements
 
 - Network access to `https://aihr-gsc-api.vercel.app`.
-- Google login with an `@aihr.com` Workspace account.
-- Access to the Ahrefs MCP server configured in `.mcp.json` when running the full audit workflow.
+- Google login with an `@aihr.com` Workspace account (requested at plugin install).
+- Ahrefs MCP access when running the full audit workflow (separate connector auth as required by Ahrefs).
 
-On first GSC use, your IDE completes OAuth against Google (PKCE). Only verified `@aihr.com` Workspace accounts are accepted. Tokens are stored by Claude Code / Cursor / Codex — not in a local plugin cache.
-
-### Connect the GSC MCP server
-
-After installing the plugin, open MCP settings (`/mcp` in Claude Code) and connect **AIHR GSC API** when prompted. The server exposes tool `seo_article_audit_gsc`.
-
-### Cursor OAuth note
-
-Cursor uses redirect URI `cursor://anysphere.cursor-mcp/oauth/callback`. If Connect fails with the existing Desktop OAuth client, create a **Web application** OAuth client in Google Cloud Console with that redirect URI and add its public client ID to `.mcp.json` under `oauth.clientId` (see `aihr-gsc-api/OAUTH.md` in the parent workspace).
+OAuth tokens are stored by Codex or Cowork after install — not in a local plugin cache file.
 
 ## License
 
