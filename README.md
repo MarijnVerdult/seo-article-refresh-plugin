@@ -31,33 +31,24 @@ This plugin bundles two skills:
 - `.claude-plugin/marketplace.json` - Claude Code marketplace manifest.
 - `plugins/seo-article-audit/.codex-plugin/plugin.json` - Codex plugin manifest.
 - `plugins/seo-article-audit/.claude-plugin/plugin.json` - Claude plugin manifest.
-- `plugins/seo-article-audit/.mcp.json` - MCP server configuration for the local GSC bridge and Ahrefs MCP endpoint.
-- `plugins/seo-article-audit/bin/seo-article-audit-server` - executable wrapper for the local stdio MCP server.
-- `plugins/seo-article-audit/servers/seo_article_audit_server.py` - stdio MCP server that fetches GSC reports from AIHR's GSC API.
+- `plugins/seo-article-audit/.mcp.json` - MCP server configuration for the remote AIHR GSC API and Ahrefs MCP endpoint.
 - `plugins/seo-article-audit/skills/` - plugin skill instructions and helper scripts.
 
 ## Requirements
 
-- Python 3.
 - Network access to `https://aihr-gsc-api.vercel.app`.
 - Google login with an `@aihr.com` Workspace account.
 - Access to the Ahrefs MCP server configured in `.mcp.json` when running the full audit workflow.
 
-On first GSC use, the plugin opens a Google login in the browser and stores a short-lived ID token in the local user cache. The API accepts only verified Google ID tokens where the hosted domain is `aihr.com`.
+On first GSC use, your IDE completes OAuth against Google (PKCE). Only verified `@aihr.com` Workspace accounts are accepted. Tokens are stored by Claude Code / Cursor / Codex — not in a local plugin cache.
 
-For local API testing, override the backend URL:
+### Connect the GSC MCP server
 
-```sh
-export AIHR_GSC_API_BASE="http://127.0.0.1:3000"
-```
+After installing the plugin, open MCP settings (`/mcp` in Claude Code) and connect **AIHR GSC API** when prompted. The server exposes tool `seo_article_audit_gsc`.
 
-## Local Check
+### Cursor OAuth note
 
-From this folder, the local MCP server should respond to initialization and tool listing:
-
-```sh
-printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}\n{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}\n' | ./plugins/seo-article-audit/bin/seo-article-audit-server
-```
+Cursor uses redirect URI `cursor://anysphere.cursor-mcp/oauth/callback`. If Connect fails with the existing Desktop OAuth client, create a **Web application** OAuth client in Google Cloud Console with that redirect URI and add its public client ID to `.mcp.json` under `oauth.clientId` (see `aihr-gsc-api/OAUTH.md` in the parent workspace).
 
 ## License
 
