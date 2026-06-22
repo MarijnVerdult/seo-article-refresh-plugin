@@ -60,38 +60,33 @@ The GSC server is a remote HTTP MCP endpoint (`https://gsc-mcp.aihr.com/mcp`). G
 sign-in for `@aihr.com` should already have completed at plugin install (Codex / Cloud Cowork).
 
 ```
-mcp__plugin_seo-article-audit_seo-article-audit__Fetch Article Keyword Performance(url="<normalised_url>")
+mcp__plugin_seo-article-audit_seo-article-audit__fetch_article_keyword_performance(url="<normalised_url>")
 ```
 
-If the result starts with "Error:", surface it to the user and stop. If the tool is missing or
+If the result is JSON with an `"error"` key, surface it to the user and stop. If the tool is missing or
 reports not authenticated, ask the user to reinstall the plugin or complete Google sign-in from
 the plugin's connector settings in Codex or Cowork.
 
-**Expect a large response.** For any real article this report is tens of thousands of
-characters (a high-traffic page can have 700+ query rows) and will be auto-saved to a
+**Expect a large response.** For any real article this payload can still be tens of thousands of
+characters (a high-traffic page can have 700+ query rows) and may be auto-saved to a
 tool-result file rather than returned inline. Do not try to read the whole thing into context.
-Read only the header (periods + Page table) to capture dates, then parse the Queries table with
-a script (grep/Python over the saved file). The same applies to the Ahrefs pull in Step 4.
+Parse with a script (Python `json.load` over the saved file). The same applies to the Ahrefs pull in Step 4.
 
-### 3. Parse the GSC markdown response
+### 3. Parse the GSC JSON response
 
-The tool returns a markdown report with two tables. When the response was persisted to a file
+The tool returns compact JSON. When the response was persisted to a file
 (the usual case — see Step 2), parse that file with a script rather than reading it inline:
 
-**Page table** (`## Page — same period comparison`): one row with current/previous clicks,
-impressions, absolute deltas, and percentage deltas.
+**Top-level fields:** `url`, `country` (`usa`), `current` / `previous` (each `{start, end}` ISO dates),
+`page`, `queries`.
 
-**Queries table** (`## Queries — same period comparison`): one row per query sorted by click
-loss, with: rank, query, current clicks, previous clicks, Δ clicks (abs), Δ clicks (%),
-current impr., previous impr., Δ impr. (abs), Δ impr. (%), avg pos now, avg pos prev, Δ avg pos.
+**Page block** (`page`): `clicks` and `impressions` are each `[current, previous]` integers.
 
-Period labels appear as:
-```
-**Current period:** 2024-07-03 — 2025-01-01
-**Previous period:** 2024-01-01 — 2024-07-02
-```
+**Queries array** (`queries`): sorted by click loss (largest first). Each row:
+- `q` — query string
+- `clicks`, `impressions`, `position` — each `[current, previous]`; `position` values are floats or `null`
 
-Capture the current-period end date and previous-period end date — they are passed to Ahrefs.
+Use `current.end` and `previous.end` as the period end dates passed to Ahrefs.
 
 ### 4. Pull Ahrefs organic keywords via the Ahrefs MCP server
 
@@ -206,8 +201,11 @@ Read the bundled `xlsx` skill (`SKILL.md` for the `xlsx` skill in the available 
 to build the file, then write `seo-article-audit-<slug>.xlsx` to the outputs folder with three sheets:
 
 - **"GSC queries"**: a small page-summary block at the top (clicks/impressions current, previous,
-  Δ abs, Δ %), then the full query table with the columns from step 3. Sort by click loss
-  (most negative Δ clicks first), matching the GSC report order.
+  Δ abs, Δ %), then the full query table with columns derived from each query row: Query,
+  Current clicks, Previous clicks, Δ clicks (abs), Δ clicks (%), Current impr., Previous impr.,
+  Δ impr. (abs), Δ impr. (%), Avg pos now, Avg pos prev, Δ avg pos (compute deltas from the
+  `[current, previous]` pairs). Sort by click loss (most negative Δ clicks first), matching the
+  GSC query order.
 - **"Ahrefs keywords"** (the second tab): columns `Keyword`, `Language`, `Country`, `Volume`,
   `Best position (current)`, `Best position (comparison)`, `Position change`. Use `keyword` first,
   then `keyword_prev` when `keyword` is null. Render a null current position as a dash. Sort by

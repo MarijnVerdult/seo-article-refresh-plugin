@@ -9,7 +9,7 @@ codex plugin marketplace add MarijnVerdult/seo-article-refresh-plugin --ref main
 codex plugin add seo-article-audit@aihr-seo-plugins
 ```
 
-During install, Codex should open a browser for Google sign-in (PKCE) so the bundled **AIHR GSC API** MCP connector can call Search Console. Only verified `@aihr.com` Workspace accounts are accepted.
+During install, Codex should open a browser for Google sign-in (PKCE) so the bundled **AIHR GSC API** MCP connector can call Search Console. Only verified `@aihr.com` Workspace accounts are accepted. **Outline** uses OAuth at connect time (sign in to the AIHR Outline workspace). **Ahrefs** uses its own connector auth when you run the full audit workflow.
 
 ## Install in Cloud Cowork
 
@@ -21,7 +21,7 @@ During install, Codex should open a browser for Google sign-in (PKCE) so the bun
 
 ### From a local file (no marketplace)
 
-A packaged Cowork bundle is built at `../seo-article-audit.plugin` (v2.7.1). Rebuild anytime:
+A packaged Cowork bundle is built at `../seo-article-audit.plugin` (v2.7.3). Rebuild anytime:
 
 ```sh
 ./scripts/package-cowork-plugin.sh
@@ -50,13 +50,14 @@ This plugin bundles two skills:
 - `.claude-plugin/marketplace.json` — Cloud Cowork / Claude marketplace manifest (`authentication: ON_INSTALL`).
 - `plugins/seo-article-audit/.codex-plugin/plugin.json` — Codex plugin manifest.
 - `plugins/seo-article-audit/.claude-plugin/plugin.json` — Cowork plugin manifest.
-- `plugins/seo-article-audit/.mcp.json` — remote AIHR GSC API and Ahrefs MCP endpoints.
+- `plugins/seo-article-audit/.mcp.json` — remote AIHR GSC API, Ahrefs, and Outline MCP endpoints.
 - `plugins/seo-article-audit/skills/` — plugin skill instructions and helper scripts.
 
 ## Requirements
 
-- Network access to `https://gsc-mcp.aihr.com`.
+- Network access to `https://gsc-mcp.aihr.com`, `https://api.ahrefs.com`, and `https://aihr.getoutline.com`.
 - Google login with an `@aihr.com` Workspace account (requested at plugin install).
+- Outline login when connecting the bundled Outline MCP server ([Outline MCP docs](https://docs.getoutline.com/s/guide/doc/mcp-6j9jtENNKL)); workspace admins must keep MCP enabled under **Settings → AI**.
 - Ahrefs MCP access when running the full audit workflow (separate connector auth as required by Ahrefs).
 
 OAuth tokens are stored by Codex or Cowork after install — not in a local plugin cache file.

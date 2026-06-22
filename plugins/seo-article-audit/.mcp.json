@@ -7,6 +7,10 @@
     "ahrefs": {
       "type": "http",
       "url": "https://api.ahrefs.com/mcp/mcp"
+    },
+    "Outline": {
+      "type": "http",
+      "url": "https://aihr.getoutline.com/mcp"
     }
   }
 }
