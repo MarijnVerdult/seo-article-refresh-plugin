@@ -1,20 +1,40 @@
-# SEO Article Audit Plugin
+# AIHR SEO Plugins
 
-Codex/Claude plugin for auditing AIHR article search performance.
+Public marketplace repo for Codex and Claude plugins used in AIHR SEO workflows.
 
-The plugin bundles two skills:
+## Install in Codex
+
+```sh
+codex plugin marketplace add MarijnVerdult/seo-article-refresh-plugin --ref main --sparse .agents/plugins --sparse plugins
+codex plugin add seo-article-audit@aihr-seo-plugins
+```
+
+## Install in Claude Code
+
+```sh
+claude plugin marketplace add MarijnVerdult/seo-article-refresh-plugin --sparse .claude-plugin plugins
+claude plugin install seo-article-audit@aihr-seo-plugins
+```
+
+## Included Plugin
+
+### `seo-article-audit`
+
+This plugin bundles two skills:
 
 - `seo-article-audit`: pulls Google Search Console query data for an AIHR article, combines it with Ahrefs keyword and content-gap data, and produces a static Excel workbook plus Markdown analysis.
 - `article-diff-md`: formats pre-marked article edits into one GitHub-style red/green Markdown diff block.
 
 ## Contents
 
-- `.codex-plugin/plugin.json` - Codex plugin manifest.
-- `.claude-plugin/plugin.json` - Claude plugin manifest.
-- `.mcp.json` - MCP server configuration for the local GSC bridge and Ahrefs MCP endpoint.
-- `bin/seo-article-audit-server` - executable wrapper for the local stdio MCP server.
-- `servers/seo_article_audit_server.py` - stdio MCP server that fetches GSC reports from AIHR's GSC API.
-- `skills/` - plugin skill instructions and helper scripts.
+- `.agents/plugins/marketplace.json` - Codex marketplace manifest.
+- `.claude-plugin/marketplace.json` - Claude Code marketplace manifest.
+- `plugins/seo-article-audit/.codex-plugin/plugin.json` - Codex plugin manifest.
+- `plugins/seo-article-audit/.claude-plugin/plugin.json` - Claude plugin manifest.
+- `plugins/seo-article-audit/.mcp.json` - MCP server configuration for the local GSC bridge and Ahrefs MCP endpoint.
+- `plugins/seo-article-audit/bin/seo-article-audit-server` - executable wrapper for the local stdio MCP server.
+- `plugins/seo-article-audit/servers/seo_article_audit_server.py` - stdio MCP server that fetches GSC reports from AIHR's GSC API.
+- `plugins/seo-article-audit/skills/` - plugin skill instructions and helper scripts.
 
 ## Requirements
 
@@ -27,7 +47,7 @@ The plugin bundles two skills:
 From this folder, the local MCP server should respond to initialization and tool listing:
 
 ```sh
-printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}\n{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}\n' | ./bin/seo-article-audit-server
+printf '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{}}\n{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}\n' | ./plugins/seo-article-audit/bin/seo-article-audit-server
 ```
 
 ## License

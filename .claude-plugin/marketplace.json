@@ -1,0 +1,18 @@
+{
+  "name": "aihr-seo-plugins",
+  "metadata": {
+    "description": "AIHR SEO plugins for article audit and article diff workflows."
+  },
+  "owner": {
+    "name": "AIHR"
+  },
+  "plugins": [
+    {
+      "name": "seo-article-audit",
+      "description": "Audit AIHR article search performance with Google Search Console and Ahrefs, and format article diffs.",
+      "category": "productivity",
+      "source": "./plugins/seo-article-audit",
+      "homepage": "https://github.com/MarijnVerdult/seo-article-refresh-plugin"
+    }
+  ]
+}

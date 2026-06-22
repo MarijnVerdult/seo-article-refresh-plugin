@@ -1,0 +1,20 @@
+{
+  "name": "aihr-seo-plugins",
+  "interface": {
+    "displayName": "AIHR SEO Plugins"
+  },
+  "plugins": [
+    {
+      "name": "seo-article-audit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/seo-article-audit"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
