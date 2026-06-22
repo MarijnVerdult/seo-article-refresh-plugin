@@ -1,6 +1,6 @@
 {
   "name": "seo-article-audit",
-  "version": "2.4.0",
+  "version": "2.5.0",
   "description": "Audit an AIHR article's search performance: pull Google Search Console query metrics and Ahrefs organic keywords (via the Ahrefs MCP server) for a single URL, run a content-gap analysis against 2–4 intent-selected organic competitors, then output a static Excel workbook (GSC queries + Ahrefs keywords + Content gap sheets) and a Markdown analysis. Also bundles the article-diff-md skill, which formats an AIHR article into a single red/green diff-block Markdown file.",
   "author": {
     "name": "AIHR"

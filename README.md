@@ -40,7 +40,16 @@ This plugin bundles two skills:
 
 - Python 3.
 - Network access to `https://aihr-gsc-api.vercel.app`.
+- Google login with an `@aihr.com` Workspace account.
 - Access to the Ahrefs MCP server configured in `.mcp.json` when running the full audit workflow.
+
+On first GSC use, the plugin opens a Google login in the browser and stores a short-lived ID token in the local user cache. The API accepts only verified Google ID tokens where the hosted domain is `aihr.com`.
+
+For local API testing, override the backend URL:
+
+```sh
+export AIHR_GSC_API_BASE="http://127.0.0.1:3000"
+```
 
 ## Local Check
 
