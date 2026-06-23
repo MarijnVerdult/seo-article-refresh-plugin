@@ -32,6 +32,22 @@ Do not reuse a `sei` value from a previous SERP URL. Google can generate or alte
 
 ## Browser Requirements
 
+Use a live browser. Two supported paths:
+
+### Cursor (default in this workspace)
+
+Use the **`cursor-ide-browser`** MCP:
+
+```text
+1. browser_navigate → US-localized google.com/search URL
+2. Wait for render; expand AI Overview if "Show more AI Overview" is visible
+3. Scroll to top (scrollY must be 0 before capture)
+4. browser_take_screenshot (full page)
+5. browser_snapshot for structured module/link extraction
+```
+
+### Codex / Cowork
+
 Use Chrome through the Codex Chrome extension when the screenshot needs the user's real browser rendering. The extension must be installed and enabled in the exact Chrome profile that Codex controls, not just in another visible Chrome profile.
 
 If Chrome cannot attach, first verify:

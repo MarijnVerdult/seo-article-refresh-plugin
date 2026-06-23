@@ -1,12 +1,12 @@
 ---
 name: serp-analysis
 description: >-
-  Gather factual observations from a Google SERP for one SEO keyword in the US. Use when
-  the SEO Article Audit workflow needs a screenshot and observed SERP inventory for AI
-  Overview, People Also Ask, people-also-search-for, ads, image modules, Reddit/YouTube/forum
-  presence, blue links, observed search intent, or other SERP features for a primary or
-  secondary keyword. This skill reports only what is visible or supplied in source data;
-  the parent SEO audit agent performs ranking-realism assessment and article recommendations.
+  Gather factual observations from a Google SERP for one SEO keyword in the US using live browser
+  capture only. Use when the SEO Article Audit workflow needs a screenshot and observed SERP inventory
+  for AI Overview, People Also Ask, people-also-search-for, ads, image modules, Reddit/YouTube/forum
+  presence, blue links, observed search intent, or other SERP features for a primary or secondary keyword.
+  Never use Ahrefs in this skill. This skill reports only what is visible
+  on the live Google SERP; the parent SEO audit agent performs ranking-realism assessment and article recommendations.
 ---
 
 # SERP Analysis
@@ -14,6 +14,28 @@ description: >-
 ## Purpose
 
 Gather factual observations from the live US Google SERP for a single keyword and return a structured inventory that can inform an SEO article audit or refresh.
+
+This skill is the **only** approved source for SERP inventory in the SEO Article Audit plugin. The parent auditor must not use Ahrefs SERP tools as a substitute.
+
+## Tool Routing (Mandatory)
+
+| Allowed | Forbidden |
+| --- | --- |
+| **Browser** navigation to `https://www.google.com/search` with the US URL template in `references/serp-screenshot-procedure.md` | **Any Ahrefs MCP call** |
+| **Browser** snapshot / DOM inspection for visible modules, links, PAA, ads, AI Overview | Ahrefs **`serp-overview`**, **`rank-tracker-serp-overview`**, SERP rows, rank-index exports |
+| **Browser** full-page screenshot per the reference procedure | Ahrefs **`site-explorer-*`**, **`gsc-*`**, **`keywords-explorer-*`**, or any other Ahrefs endpoint |
+| | Using Ahrefs to infer organic result order, SERP features, or AI Overview content |
+
+If browser access fails, report the failure and stop SERP collection. Do **not** fall back to Ahrefs.
+
+### Browser requirement
+
+Use live browser automation:
+
+- **Cursor:** `cursor-ide-browser` MCP — `browser_navigate`, `browser_snapshot`, `browser_take_screenshot`, and related interaction tools.
+- **Codex / Cowork:** Codex Chrome extension workflow described in `references/serp-screenshot-procedure.md`.
+
+Read `references/serp-screenshot-procedure.md` before the first screenshot. Every SERP fact in the output must trace to what the browser showed on the live Google page.
 
 This skill is suitable for:
 
@@ -27,9 +49,9 @@ For full SEO article audits, the parent agent should delegate this skill's workf
 
 - `keyword` — the exact keyword to analyze.
 - `market` — default `US`.
-- Optional source data: Ahrefs SERP rows, Ahrefs keyword rows, or other SERP data already gathered
-  by the parent agent.
 - Optional keyword role: primary or secondary. Use this for labeling only.
+
+Do not use Ahrefs in this skill. Do not call the Ahrefs MCP. Do not accept Ahrefs SERP rows, Ahrefs SERP Overview output, rank-index exports, or any other Ahrefs data as input or evidence.
 
 ## Core Output Questions
 
@@ -45,9 +67,10 @@ Do not answer whether AIHR can rank, what AIHR should write, what subheaders to 
 
 ## Workflow
 
-1. Build the US-localized Google SERP URL for the keyword.
-2. Capture a full-page screenshot using the reference procedure.
-3. Inspect the live SERP and screenshot for:
+1. Build the US-localized Google SERP URL for the keyword (see `references/serp-screenshot-procedure.md`).
+2. Open the URL in a **browser** tab. Do not open Ahrefs.
+3. Capture a full-page screenshot using the reference procedure.
+4. Inspect the live SERP and screenshot for:
 	1. AI Overview: whether present, visible text summary, cited/source types, and whether visible sources include YouTube, Reddit, forums, definitions, tools, lists, or article-style pages.
 	2. Search intent: observed dominant and secondary intent labels, grounded in visible SERP composition and page types.
 	3. People Also Ask: every visible question, in visible order.
@@ -57,9 +80,17 @@ Do not answer whether AIHR can rank, what AIHR should write, what subheaders to 
 	7. Things to know or other exploratory modules when present.
 	8. Ads: presence, position, advertiser/domain, visible copy, and landing page when visible.
 	9. Video, Reddit, forum, tool, job board, dictionary, government, university, or vendor modules.
-4. Return a structured factual report with evidence and caveats.
+5. Return a structured factual report with evidence and caveats.
 
 Read `references/serp-screenshot-procedure.md` before taking screenshots.
+
+**Hard stop:** do not use Ahrefs in this skill. Never call Ahrefs MCP tools. Never paste Ahrefs data into any output section. SERP facts must come only from the live browser capture.
+
+In **SERP Evidence Used**, state explicitly:
+
+```text
+Live Google SERP via browser (screenshot-backed)
+```
 
 ## Output Contract
 
@@ -78,10 +109,11 @@ Ads
 Images And Video
 Forums, Reddit, And UGC
 Other SERP Modules
-Provided Ahrefs Facts
 Caveats
 Screenshot
 ```
+
+**SERP Evidence Used** must confirm browser capture only. If Ahrefs or any third-party SERP source was used, the output is invalid — redo the capture with the browser workflow.
 
 Keep all content scoped to observed evidence. Do not include "Ranking Realism", "Implications For AIHR", "Recommendations", "Opportunities", or similar article-strategy sections.
 
@@ -103,6 +135,7 @@ Return concrete SERP items, not summaries only:
 
 Do not:
 
+- Use Ahrefs in any form — no MCP calls, no pasted exports, no keyword facts passed through this skill.
 - Read or evaluate AIHR's article unless explicitly asked by the parent agent for a separate task.
 - Suggest subheaders, FAQs, images, secondary keywords, rewrites, or content changes.
 - Judge whether AIHR can rank top 3 or top 5.
@@ -124,7 +157,8 @@ When a parent SEO audit agent delegates this work, pass:
 
 - Exact keyword.
 - Whether it is primary or secondary.
-- Relevant Ahrefs SERP/keyword rows if already collected.
 - Required screenshot output location or filename convention.
+
+Do not pass Ahrefs data to this skill. Keyword difficulty and volume are gathered separately by the parent auditor via Ahrefs — not inside `serp-analysis`.
 
 Do not pass the full article unless there is a separate, explicit reason. Ask the sub-agent to return only the structured factual output contract plus the screenshot path.
