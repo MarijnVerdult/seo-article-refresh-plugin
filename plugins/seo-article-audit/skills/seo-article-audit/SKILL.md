@@ -40,6 +40,7 @@ discussed the strategy.
 7. Identify potential secondary keyword candidates from GSC.
 8. Pull Ahrefs difficulty/volume and delegate live-Google SERP analysis for selected secondary keyword(s).
 9. Decide the strategy direction and report back for human review.
+10. Update Outline with the strategy report — do not skip this after delivering the report to the user.
 
 ## Tool Routing (Mandatory)
 
@@ -320,6 +321,24 @@ Which strategy should we discuss before optimization work begins?
 
 End by asking the human to confirm or challenge the strategy before any optimization plan is created.
 
+## Gotcha — update Outline after the strategy report
+
+Delivering the strategy report to the user is not the end of the audit. **Immediately after** you report back, use the bundled **`outline-article-refresh-memory`** skill to create or update the current monthly Outline record for this article.
+
+Do not wait for the user to ask. Do not assume step 3 (checking prior Outline analysis) satisfies documentation — that step is read-only at the start.
+
+Capture at minimum:
+
+```text
+Traffic decline summary and key GSC query findings
+Primary and secondary keyword facts (Ahrefs difficulty/volume)
+Strategy recommendation and why
+Open questions for human review
+Links or references to audit artifacts (full-article file, SERP screenshots, etc.)
+```
+
+If you create a new monthly record, update the collection overview/table of contents per **`outline-article-refresh-memory`**. Return the Outline document link when done.
+
 ## What Not To Do
 
 - Do not produce a rewrite plan.
@@ -328,6 +347,7 @@ End by asking the human to confirm or challenge the strategy before any optimiza
 - Do not treat the SERP sub-agent as an article strategist.
 - Do not skip reading the article.
 - Do not skip GSC if the question is about traffic decline.
+- Do not finish the audit after the strategy report without updating Outline via **`outline-article-refresh-memory`**.
 - Do not use Ahrefs for SERP data (`serp-overview`, `rank-tracker-serp-overview`, SERP rows, rank-index exports).
 - Do not use Ahrefs `gsc-*` tools or site-explorer endpoints when the bundled GSC MCP or keyword metrics call exists.
 - Do not fill Primary SERP Facts or Secondary SERP Facts without a **`serp-analysis`** screenshot-backed browser capture.
