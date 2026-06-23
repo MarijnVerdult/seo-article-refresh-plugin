@@ -10,6 +10,8 @@ Capture a full-page screenshot of a Google results page for a keyword, with the 
 
 Always build the SERP URL from `https://www.google.com/search`.
 
+**Gotcha:** use the full UULE value below on every SERP — primary keyword, secondary keyword, or standalone capture. Never omit or shorten UULE because the keyword is secondary or because you already captured another SERP in the same audit.
+
 Required query parameters:
 
 ```text

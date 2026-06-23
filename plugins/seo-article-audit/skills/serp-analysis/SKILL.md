@@ -53,6 +53,14 @@ For full SEO article audits, the parent agent should delegate this skill's workf
 
 Do not use Ahrefs in this skill. Do not call the Ahrefs MCP. Do not accept Ahrefs SERP rows, Ahrefs SERP Overview output, rank-index exports, or any other Ahrefs data as input or evidence.
 
+## Gotcha — full UULE on every SERP
+
+Every SERP capture must use the complete US-localized Google URL from `references/serp-screenshot-procedure.md`, including the full fixed `uule=...` parameter. This is mandatory for **every** keyword run — primary **and** secondary. Keyword role is labeling only; it does not relax URL requirements.
+
+Do not omit UULE, truncate it, substitute a different geolocation value, or fall back to a plain `?q=...` search URL. Each primary and secondary keyword needs its own fresh browser navigation with the full parameter set (`hl=en`, `gl=US`, `pws=0`, and the complete UULE string). A secondary-keyword SERP is not a shortcut run.
+
+If the captured URL is missing the full UULE, discard the capture and redo it before reporting SERP facts.
+
 ## Core Output Questions
 
 Answer these fact-only questions:
@@ -67,7 +75,7 @@ Do not answer whether AIHR can rank, what AIHR should write, what subheaders to 
 
 ## Workflow
 
-1. Build the US-localized Google SERP URL for the keyword (see `references/serp-screenshot-procedure.md`).
+1. Build the US-localized Google SERP URL for the keyword with the full fixed UULE — see **Gotcha — full UULE on every SERP** and `references/serp-screenshot-procedure.md`.
 2. Open the URL in a **browser** tab. Do not open Ahrefs.
 3. Capture a full-page screenshot using the reference procedure.
 4. Inspect the live SERP and screenshot for:

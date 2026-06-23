@@ -1,7 +1,7 @@
 {
   "name": "seo-article-audit",
   "version": "2.7.6",
-  "description": "Diagnose why an AIHR article declined in organic traffic and decide whether there is a viable SEO salvage strategy. Reads the article, checks prior Outline analysis, derives primary and secondary keyword candidates, pulls GSC and Ahrefs facts, delegates factual SERP observation, and reports a human-in-the-loop strategy recommendation before any optimization work. Also bundles serp-analysis for factual US Google SERP screenshot and feature inventory, article-diff-md for red/green diff-block Markdown files, and outline-article-refresh-memory so assistants proactively keep monthly Outline records and attachments up to date during SEO refresh work.",
+  "description": "Diagnose why an AIHR article lost organic traffic and whether SEO salvage is viable. Reads the article, checks Outline history, derives keyword candidates, pulls GSC/Ahrefs data, runs factual SERP observation, and recommends strategy before optimization. Bundles serp-analysis (US SERP facts), article-diff-md (red/green diffs), and outline-article-refresh-memory (monthly Outline updates during refresh).",
   "author": {
     "name": "AIHR"
   }
