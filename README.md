@@ -7,7 +7,7 @@ Public marketplace repo for Codex and Cloud Cowork plugins used in AIHR SEO work
 1. Open the Codex Desktop application.
 2. Open **Customize → Plugins**.
 3. Choose **Add marketplace**.
-4. Enter `MarijnVerdult/seo-article-refresh-plugin` and add the marketplace.
+4. Enter `AIHR1/seo-article-refresh-plugin` and add the marketplace.
 5. Install **SEO Article Audit** from the plugin list.
 6. Complete the Google sign-in prompt for **AIHR GSC API** when Codex asks for it.
 
@@ -18,7 +18,7 @@ During install, Codex should open a browser for Google sign-in (PKCE) so the bun
 ### From GitHub marketplace
 
 1. Open **Customize → Plugins** in Cowork.
-2. **Add marketplace** and enter `MarijnVerdult/seo-article-refresh-plugin` (or the full GitHub URL).
+2. **Add marketplace** and enter `AIHR1/seo-article-refresh-plugin` (or the full GitHub URL).
 3. Install **SEO Article Audit**.
 
 ### From a local file (no marketplace)
