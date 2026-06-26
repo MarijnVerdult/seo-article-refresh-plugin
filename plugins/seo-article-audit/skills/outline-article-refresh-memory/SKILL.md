@@ -1,12 +1,17 @@
 ---
 name: outline-article-refresh-memory
 description: >-
-  Proactively create and maintain monthly Outline memory records for AIHR SEO article
-  refresh work. Use whenever gathering SEO data, running or reviewing an article audit,
-  suggesting article refresh changes, preparing final article edits, attaching
-  GSC/Ahrefs/Excel/CSV supporting files, or checking whether analysis or changes were
-  already done. The AI assistant owns keeping the AIHR SEO Article Refresh Outline
-  collection up to date; do not wait for the user to explicitly ask for documentation.
+  Create and maintain monthly Outline memory records for AIHR SEO article refresh work,
+  as part of the seo-article-audit plugin. Use ONLY within an active SEO article refresh:
+  gathering GSC/Ahrefs SEO data for a specific article, running or reviewing an article
+  audit, suggesting article refresh changes, preparing final article edits, attaching
+  GSC/Ahrefs/Excel/CSV refresh artifacts, or checking whether analysis or changes were
+  already done for an article. Within that context the assistant owns keeping the AIHR
+  SEO Article Refresh Outline collection current without being asked. Do NOT use this
+  skill for general file/folder work, note-taking, documentation, memory, or storage that
+  is not part of an SEO article refresh — it does not govern where unrelated content is
+  saved. For anything outside SEO article refresh, ignore this skill and use the default
+  storage location (the user's selected workspace folder), not Outline.
 ---
 # Outline article refresh memory
 
@@ -14,10 +19,36 @@ Use Outline as the persistent, user- and session-agnostic memory for AIHR SEO ar
 refresh work. The target collection is **AIHR-seo-article-refresh** in the AIHR Outline
 workspace.
 
+## Scope — when this skill applies
+
+This skill applies **only** inside an active AIHR SEO article refresh, i.e. work driven by
+the `seo-article-audit` plugin: auditing a specific article, pulling GSC/Ahrefs data for
+it, proposing or producing refresh edits, or recording those results. The Outline
+collection is a dedicated SEO-refresh memory, not a general store.
+
+## When NOT to use this skill
+
+Do not invoke this skill, and do not write to Outline, when the work is not an SEO article
+refresh. In particular:
+
+- General requests to inspect, list, organize, or summarize files and folders in the
+  workspace.
+- Note-taking, documentation, "remember this", or "save this" requests unrelated to an
+  SEO article refresh.
+- Any task where the user has not asked for SEO/article-refresh work and no audit is in
+  progress.
+
+In all of these cases, ignore this skill and fall back to the **default storage
+location** — the user's selected workspace folder. Do not create Outline records, do not
+search the SEO-refresh collection, and do not treat Outline as the default memory. Only
+the SEO article refresh workflow described below uses Outline.
+
 ## Proactive responsibility
 
-The assistant is responsible for keeping Outline current. Trigger this skill when doing
-SEO refresh work, even if the user does not mention Outline.
+Once an SEO article refresh is underway, the assistant is responsible for keeping Outline
+current. Trigger this skill when actively doing SEO article refresh work, even if the user
+does not mention Outline. This proactivity is scoped to SEO article refresh only — it is
+not a reason to use Outline for any other task (see "When NOT to use this skill" above).
 
 Use this skill before and after related work:
 
