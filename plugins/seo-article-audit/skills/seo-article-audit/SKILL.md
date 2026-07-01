@@ -100,6 +100,7 @@ Need what Google actually shows for a keyword (features, links, AI Overview, PAA
 - Separate data gathering from interpretation.
 - Follow **Tool Routing (Mandatory)** for every data pull. Wrong-tool data is invalid for this audit.
 - Treat `serp-analysis` outputs as the only SERP inventory evidence. The main auditor owns interpretation.
+- For Google SERP capture, require the user's real browser profile. In Codex, use the Codex Chrome plugin / Codex Chrome Extension. In Claude Cowork, use Claude Cowork browser control or Claude in Chrome. Do not use standalone Playwright, bundled/headless Chromium, or the in-app browser unless the user explicitly approves that fallback after the user-browser path fails.
 - If data is unavailable, continue with the remaining evidence and state the gap.
 - Do not overfit to one metric. Use article content, Ahrefs keyword metrics, SERP facts, and GSC together.
 - Be explicit about what is observed vs inferred.
@@ -188,7 +189,7 @@ strong and SERP fit is realistic.
 ## 6. Delegate Primary Keyword SERP Analysis
 
 Use the bundled **`serp-analysis`** skill as the contract for a fact-only sub-agent task when sub-agents
-are available. The sub-agent must use **browser** tools to open the live Google SERP — not Ahrefs.
+are available. The sub-agent must use the environment's **user-browser** tools to open the live Google SERP — not Ahrefs and not a bundled/headless browser.
 
 Pass only:
 
@@ -197,6 +198,7 @@ keyword
 keyword role: primary
 market: US
 required screenshot filename/path
+browser requirement: user browser only; Codex → Codex Chrome plugin / Codex Chrome Extension; Claude Cowork → Claude Cowork browser control or Claude in Chrome; no standalone Playwright, bundled/headless Chromium, or in-app browser without explicit user-approved fallback
 ```
 
 Do not pass Ahrefs data into **`serp-analysis`**. Ahrefs keyword metrics stay in the parent audit; SERP collection is browser-only.
@@ -206,9 +208,9 @@ observed search intent, exact People Also Ask questions, exact related searches 
 queries, organic result links, SERP modules, ads, AI Overview facts, caveats, and screenshot path.
 
 If sub-agents are not available, run the **`serp-analysis`** workflow directly and keep the same fact-only
-boundary.
+boundary and user-browser requirement.
 
-The SERP evidence must be gathered from live Google using **`serp-analysis`** only. Do not use Ahrefs inside that skill or to fill Primary SERP Facts.
+The SERP evidence must be gathered from live Google using **`serp-analysis`** only. Do not use Ahrefs inside that skill or to fill Primary SERP Facts. If the correct user browser cannot be reached, stop SERP collection and ask the user to connect/enable the browser add-on/profile rather than continuing with another browser.
 
 ## 7. Pull GSC Exact-Page Query Data
 
@@ -339,6 +341,8 @@ Links or references to audit artifacts (full-article file, SERP screenshots, etc
 
 If you create a new monthly record, update the collection overview/table of contents per **`outline-article-refresh-memory`**. Return the Outline document link when done.
 
+If an Outline create/update action is blocked, rejected, or requires user approval, stop immediately and ask: "Do I have your approval to save this SEO audit record to the AIHR-seo-article-refresh Outline collection?" Do not defer this to the final answer, do not silently skip the memory update, and do not treat the audit as complete until Outline is updated or the user explicitly declines/withholds approval.
+
 ## What Not To Do
 
 - Do not produce a rewrite plan.
@@ -348,6 +352,7 @@ If you create a new monthly record, update the collection overview/table of cont
 - Do not skip reading the article.
 - Do not skip GSC if the question is about traffic decline.
 - Do not finish the audit after the strategy report without updating Outline via **`outline-article-refresh-memory`**.
+- Do not reduce an Outline write approval/rejection to a final-answer caveat. Ask for approval immediately and retry the Outline write if the user approves.
 - Do not use Ahrefs for SERP data (`serp-overview`, `rank-tracker-serp-overview`, SERP rows, rank-index exports).
 - Do not use Ahrefs `gsc-*` tools or site-explorer endpoints when the bundled GSC MCP or keyword metrics call exists.
 - Do not fill Primary SERP Facts or Secondary SERP Facts without a **`serp-analysis`** screenshot-backed browser capture.

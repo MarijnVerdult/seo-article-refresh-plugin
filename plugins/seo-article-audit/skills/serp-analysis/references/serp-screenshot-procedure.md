@@ -34,23 +34,11 @@ Do not reuse a `sei` value from a previous SERP URL. Google can generate or alte
 
 ## Browser Requirements
 
-Use a live browser. Two supported paths:
+Use the user's real browser profile. Do not use standalone Playwright, bundled/headless Chromium, or an in-app browser for Google SERP capture unless the user explicitly approves that fallback after the user-browser path fails.
 
-### Cursor (default in this workspace)
+### Codex
 
-Use the **`cursor-ide-browser`** MCP:
-
-```text
-1. browser_navigate → US-localized google.com/search URL
-2. Wait for render; expand AI Overview if "Show more AI Overview" is visible
-3. Scroll to top (scrollY must be 0 before capture)
-4. browser_take_screenshot (full page)
-5. browser_snapshot for structured module/link extraction
-```
-
-### Codex / Cowork
-
-Use Chrome through the Codex Chrome extension when the screenshot needs the user's real browser rendering. The extension must be installed and enabled in the exact Chrome profile that Codex controls, not just in another visible Chrome profile.
+Use Chrome through the Codex Chrome plugin / Codex Chrome Extension. The extension must be installed and enabled in the exact Chrome profile that Codex controls, not just in another visible Chrome profile.
 
 If Chrome cannot attach, first verify:
 
@@ -60,7 +48,25 @@ If Chrome cannot attach, first verify:
 3. The native messaging host is installed correctly.
 ```
 
-If the extension is installed in the wrong profile, open the selected Chrome profile, install or enable the extension there, then retry.
+If the extension is installed in the wrong profile, ask the user to open the selected Chrome profile, install or enable the extension there, then retry.
+
+### Claude Cowork
+
+Use the Claude Cowork browser surface or the Claude in Chrome add-on controlling the user's Chrome profile. If that connection is unavailable, stop and ask the user to enable/connect it.
+
+### Cursor
+
+Use **`cursor-ide-browser`** only when it controls the user's active browser context:
+
+```text
+1. browser_navigate → US-localized google.com/search URL
+2. Wait for render; expand AI Overview if "Show more AI Overview" is visible
+3. Scroll to top (scrollY must be 0 before capture)
+4. browser_take_screenshot (full page)
+5. browser_snapshot for structured module/link extraction
+```
+
+If the current environment only exposes a non-user bundled browser, stop and ask for the appropriate browser connection. Do not proceed with bundled/headless browser capture.
 
 ## Capture Sequence
 

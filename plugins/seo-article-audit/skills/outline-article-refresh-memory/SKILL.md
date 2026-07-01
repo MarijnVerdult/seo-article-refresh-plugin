@@ -140,6 +140,16 @@ to Outline. Once approved:
 If the file is already in another system such as Google Drive, GitHub, WordPress, or a CMS revision history, link that source instead of re-uploading unless the user asks for an
 Outline attachment.
 
+## Approval handling for Outline writes
+
+Creating or updating the monthly Outline document is part of the SEO refresh workflow. If a tool call to create or update an Outline record is blocked, rejected, or requires explicit approval, stop immediately and ask the user:
+
+```text
+Do I have your approval to save this SEO audit record to the AIHR-seo-article-refresh Outline collection?
+```
+
+Do not continue to a final answer while leaving the memory update unresolved. Do not silently skip the update. If the user approves, retry the Outline write and then return the Outline document link. If the user declines or withholds approval, state that the audit memory update is not complete because approval was not granted.
+
 ## Updating the collection overview
 
 After creating a monthly record, update the collection overview so it stays the table of
@@ -154,5 +164,6 @@ contents. Add a bullet in the existing `Table of contents` section:
 - Do not state inferences as facts. Label interpretation clearly.
 - Do not create duplicate monthly records by accident.
 - Do not upload local files to Outline without explicit user approval.
+- Do not treat a blocked or approval-required Outline write as optional. Ask for approval immediately and retry after approval.
 - Do not overwrite a human-edited collection overview with a shorter generated one.
 - After creating a record, return the Outline document link and any attachment links.

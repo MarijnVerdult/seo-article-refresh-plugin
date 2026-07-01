@@ -25,15 +25,19 @@ This skill is the **only** approved source for SERP inventory in the SEO Article
 | **Browser** snapshot / DOM inspection for visible modules, links, PAA, ads, AI Overview | Ahrefs **`serp-overview`**, **`rank-tracker-serp-overview`**, SERP rows, rank-index exports |
 | **Browser** full-page screenshot per the reference procedure | Ahrefs **`site-explorer-*`**, **`gsc-*`**, **`keywords-explorer-*`**, or any other Ahrefs endpoint |
 | | Using Ahrefs to infer organic result order, SERP features, or AI Overview content |
+| | Standalone Playwright, bundled/headless Chromium, in-app browser, or any non-user browser for Google SERP capture unless the user explicitly approves that fallback after the user browser path fails |
 
-If browser access fails, report the failure and stop SERP collection. Do **not** fall back to Ahrefs.
+If user-browser access fails, stop SERP collection and ask the user to connect or enable the required browser add-on/profile. Do **not** fall back to Ahrefs, standalone Playwright, bundled/headless Chromium, or the in-app browser.
 
 ### Browser requirement
 
-Use live browser automation:
+Use the user's real browser profile for Google SERP capture. This is mandatory because Google SERPs depend on browser profile state, anti-bot handling, localization, and rendered page behavior.
 
-- **Cursor:** `cursor-ide-browser` MCP — `browser_navigate`, `browser_snapshot`, `browser_take_screenshot`, and related interaction tools.
-- **Codex / Cowork:** Codex Chrome extension workflow described in `references/serp-screenshot-procedure.md`.
+- **Codex:** use the Codex Chrome plugin / Codex Chrome Extension through `chrome:control-chrome`. Do not use the bundled browser, standalone Playwright, headless Chromium, or the in-app browser for Google SERPs.
+- **Claude Cowork:** use the Claude Cowork browser surface or the Claude in Chrome add-on controlling the user's Chrome profile. Do not use a bundled/headless browser for Google SERPs.
+- **Cursor:** use `cursor-ide-browser` only when it controls the user's active browser context. If it is not a user-browser surface for the current environment, stop and ask for the appropriate browser connection.
+
+When the correct user-browser surface is unavailable, say exactly what is needed, for example: "I need access to your browser to capture the live Google SERP. Please enable/connect the browser add-on and tell me when ready." Do not continue SERP collection with another browser unless the user explicitly approves that fallback.
 
 Read `references/serp-screenshot-procedure.md` before the first screenshot. Every SERP fact in the output must trace to what the browser showed on the live Google page.
 
@@ -76,7 +80,7 @@ Do not answer whether AIHR can rank, what AIHR should write, what subheaders to 
 ## Workflow
 
 1. Build the US-localized Google SERP URL for the keyword with the full fixed UULE — see **Gotcha — full UULE on every SERP** and `references/serp-screenshot-procedure.md`.
-2. Open the URL in a **browser** tab. Do not open Ahrefs.
+2. Open the URL in a **user-browser** tab using the environment-specific route above. Do not open Ahrefs. Do not use standalone Playwright, bundled/headless Chromium, or the in-app browser.
 3. Capture a full-page screenshot using the reference procedure.
 4. Inspect the live SERP and screenshot for:
 	1. AI Overview: whether present, visible text summary, cited/source types, and whether visible sources include YouTube, Reddit, forums, definitions, tools, lists, or article-style pages.
